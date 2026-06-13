@@ -1,0 +1,35 @@
+{
+  "name": "sp-nextjs",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "packageManager": "pnpm@11.6.0",
+  "dependencies": {
+    "@ant-design/cssinjs": "^2.1.2",
+    "@ant-design/icons": "^6.2.5",
+    "@azure/msal-node": "^3.8.10",
+    "@pnp/common-commonjs": "^2.15.0",
+    "@pnp/logging-commonjs": "^2.15.0",
+    "@pnp/nodejs-commonjs": "^2.15.0",
+    "@pnp/odata-commonjs": "^2.15.0",
+    "@pnp/sp-commonjs": "^2.15.0",
+    "antd": "^6.4.3",
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/node-fetch": "^2.6.13",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 100%;
+}
+
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+/* Force dark inputs when page is in dark mode */
+html.dark input,
+html.dark textarea {
+  background-color: #0f1117;
+  color: rgba(255, 255, 255, 0.85);
+  border-color: #2d3148;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Overlay scrollbar — floats over content, doesn't take width */
+.scroll-area {
+  overflow-y: auto;
+  overflow-y: overlay; /* Chrome/Edge: scrollbar overlays, no layout shift */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-area::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 999px;
+  transition: background 0.25s ease;
+}
+
+/* Show on hover */
+.scroll-area:hover {
+  scrollbar-color: rgba(100, 116, 139, 0.45) transparent;
+}
+
+.scroll-area:hover::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.45);
+}
+
+.scroll-area:hover::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.75);
+}
+
+html.dark .scroll-area:hover {
+  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+}
+
+html.dark .scroll-area:hover::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+}
+
+html.dark .scroll-area:hover::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.55);
+}
