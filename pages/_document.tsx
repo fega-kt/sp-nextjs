@@ -2,7 +2,9 @@ import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 const MyDocument = () => (
   <Html lang="vi" suppressHydrationWarning>
-    <Head />
+    <Head>
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    </Head>
     <body>
       {/* Set dark class before React hydrates to prevent Tailwind flash */}
       <script
