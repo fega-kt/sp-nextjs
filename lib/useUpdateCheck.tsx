@@ -1,27 +1,28 @@
 import { Button, notification } from 'antd';
 import { useEffect } from 'react';
 
-const BUILT_HASH = process.env.NEXT_PUBLIC_DEPLOY_HASH || 'ssdv';
 const POLL_MS = 60_000;
 
 export function useUpdateCheck() {
   useEffect(() => {
-    if (!BUILT_HASH) return;
+    if (process.env.NODE_ENV !== 'production') return;
 
     let notified = false;
+    let baseline: string | null = null;
 
     async function check() {
       if (notified) return;
       try {
-        const res = await fetch('/api/version');
-        if (!res.ok) return;
-        const { hash } = await res.json();
+        const res = await fetch('/', { method: 'HEAD' });
+        const marker = res.headers.get('etag') || res.headers.get('last-modified');
+        if (!marker) return;
+        if (baseline === null) { baseline = marker; return; }
+        if (marker === baseline) return;
 
-        if (!hash || hash === BUILT_HASH) return;
         notified = true;
         notification.info({
           message: 'Có bản cập nhật mới',
-          description: `Phiên bản ${hash} đã sẵn sàng — tải lại trang để cập nhật.`,
+          description: 'Tải lại trang để cập nhật phiên bản mới nhất.',
           btn: (
             <Button type="primary" size="small" onClick={() => window.location.reload()}>
               Tải lại ngay
@@ -29,6 +30,7 @@ export function useUpdateCheck() {
           ),
           duration: 0,
           placement: 'topRight',
+          onClose: () => { notified = false; },
         });
       } catch {}
     }
