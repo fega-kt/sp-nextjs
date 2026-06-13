@@ -1,21 +1,11 @@
 import { LabelTip } from '@/components/LabelTip';
 import { useTokenForm } from '@/lib/useTokenForm';
-import { CopyOutlined, DownloadOutlined, UploadOutlined } from '@ant-design/icons';
+import { CopyOutlined, DownloadOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Tooltip } from 'antd';
-import { useRef } from 'react';
 
-export default function CertTab() {
+export default function SecretTab() {
   const { loading, accessToken, contextHolder, form, fileUrl, handleFinish, copyToken } =
-    useTokenForm('/api/download-cert');
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  function handlePemFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => form.setFieldValue('privateKey', (ev.target?.result as string) || '');
-    reader.readAsText(file);
-  }
+    useTokenForm('/api/download-secret');
 
   return (
     <>
@@ -39,44 +29,11 @@ export default function CertTab() {
         </div>
 
         <Form.Item
-          name="thumbprint"
-          label={<LabelTip label="Thumbprint (x5t)" tip="Thumbprint SHA-1 của certificate — dạng hex từ Azure Portal → Certificates & secrets" />}
-          rules={[{ required: true, message: 'Nhập thumbprint' }]}
+          name="clientSecret"
+          label={<LabelTip label="Client Secret" tip="Secret value từ Azure Portal → App registrations → Certificates & secrets" />}
+          rules={[{ required: true, message: 'Nhập client secret' }]}
         >
-          <Input placeholder="40 ký tự hex, lấy từ Azure Portal → Certificates & secrets" autoComplete="off" />
-        </Form.Item>
-
-        <Form.Item
-          label={<LabelTip label="Private Key (PEM)" tip="Dán nội dung file .pem / .key hoặc upload trực tiếp" />}
-        >
-          <div className="flex gap-2 items-start">
-            <Form.Item
-              name="privateKey"
-              noStyle
-              rules={[{ required: true, message: 'Nhập private key' }]}
-            >
-              <Input.TextArea
-                rows={4}
-                placeholder={"-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"}
-                spellCheck={false}
-                autoComplete="off"
-                style={{ fontFamily: 'Menlo, Monaco, Consolas, monospace', fontSize: 13, flex: 1 }}
-              />
-            </Form.Item>
-            <Button
-              icon={<UploadOutlined />}
-              onClick={() => fileRef.current?.click()}
-              title="Upload .pem"
-              className="mt-0 shrink-0"
-            />
-            <input
-              ref={fileRef}
-              type="file"
-              accept=".pem,.key,.txt"
-              onChange={handlePemFile}
-              style={{ display: 'none' }}
-            />
-          </div>
+          <Input.Password placeholder="Dán client secret value vào đây" autoComplete="off" />
         </Form.Item>
 
         <Form.Item

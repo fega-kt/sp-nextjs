@@ -1,16 +1,19 @@
 import CertTab from '@/components/CertTab';
+import SecretTab from '@/components/SecretTab';
 import TokenTab from '@/components/TokenTab';
+import { useUpdateCheck } from '@/lib/useUpdateCheck';
 import { useTheme } from '@/contexts/theme';
-import { BulbFilled, BulbOutlined, KeyOutlined, SafetyOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { BulbFilled, BulbOutlined, InfoCircleOutlined, KeyOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
 import Head from 'next/head';
 import { useState } from 'react';
 
-type Tab = 'token' | 'cert';
+type Tab = 'token' | 'cert' | 'secret';
 
 export default function Home() {
   const { dark, toggle } = useTheme();
   const [activeTab, setActiveTab] = useState<Tab>('token');
+  useUpdateCheck();
 
   return (
     <>
@@ -35,17 +38,20 @@ export default function Home() {
                     SharePoint Downloader
                   </span>
                   <span className="text-sm leading-tight text-slate-500 dark:text-slate-400 mt-0.5">
-                    Tải file từ SharePoint qua Access Token hoặc Certificate
+                    Tải file từ SharePoint qua Token, Certificate hoặc Client Secret
                   </span>
                 </div>
               </div>
-              <Button
-                type="text"
-                icon={dark ? <BulbOutlined /> : <BulbFilled />}
-                onClick={toggle}
-                title={dark ? 'Chuyển sang Light mode' : 'Chuyển sang Dark mode'}
-                className="!border !border-slate-200 dark:!border-[#2d3148] hover:!border-indigo-400 !text-slate-500 dark:!text-slate-400 hover:!text-indigo-500 transition-colors"
-              />
+              <div className="flex items-center gap-2">
+                <DeployInfo />
+                <Button
+                  type="text"
+                  icon={dark ? <BulbOutlined /> : <BulbFilled />}
+                  onClick={toggle}
+                  title={dark ? 'Chuyển sang Light mode' : 'Chuyển sang Dark mode'}
+                  className="!border !border-slate-200 dark:!border-[#2d3148] hover:!border-indigo-400 !text-slate-500 dark:!text-slate-400 hover:!text-indigo-500 transition-colors"
+                />
+              </div>
             </div>
 
             {/* Tab nav — fixed, never scrolls */}
@@ -56,11 +62,16 @@ export default function Home() {
               <TabButton active={activeTab === 'cert'} onClick={() => setActiveTab('cert')}>
                 <SafetyOutlined /> Certificate
               </TabButton>
+              <TabButton active={activeTab === 'secret'} onClick={() => setActiveTab('secret')}>
+                <LockOutlined /> Client Secret
+              </TabButton>
             </div>
 
             {/* Form content — only this part scrolls */}
             <div className="scroll-area flex-1 px-8 pt-6 pb-0">
-              {activeTab === 'token' ? <TokenTab /> : <CertTab />}
+              {activeTab === 'token' && <TokenTab />}
+              {activeTab === 'cert' && <CertTab />}
+              {activeTab === 'secret' && <SecretTab />}
             </div>
 
           </div>
@@ -90,6 +101,39 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
     >
       {children}
     </button>
+  );
+}
+
+function DeployInfo() {
+  const by = process.env.NEXT_PUBLIC_DEPLOY_BY || 'unknown';
+  const at = process.env.NEXT_PUBLIC_DEPLOY_AT;
+  const hash = process.env.NEXT_PUBLIC_DEPLOY_HASH;
+  const msg = process.env.NEXT_PUBLIC_DEPLOY_MSG;
+  const formatted = at
+    ? new Intl.DateTimeFormat('vi-VN', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit',
+      }).format(new Date(at))
+    : 'unknown';
+
+  const content = (
+    <div className="text-xs leading-relaxed space-y-0.5">
+      <div><span className="text-slate-400">Deploy bởi:</span> <span className="font-medium">{by}</span></div>
+      <div><span className="text-slate-400">Deploy lúc:</span> <span className="font-medium">{formatted}</span></div>
+      {hash && <div><span className="text-slate-400">Commit:</span> <span className="font-mono font-medium">{hash}</span></div>}
+      {msg && <div><span className="text-slate-400">Message:</span> <span className="font-medium">{msg}</span></div>}
+    </div>
+  );
+
+  return (
+    <Tooltip title={content} placement="bottomRight">
+      <Button
+        type="text"
+        size="small"
+        icon={<InfoCircleOutlined />}
+        className="!border !border-slate-200 dark:!border-[#2d3148] hover:!border-indigo-400 !text-slate-500 dark:!text-slate-400 hover:!text-indigo-500 transition-colors !w-8 !h-8"
+      />
+    </Tooltip>
   );
 }
 

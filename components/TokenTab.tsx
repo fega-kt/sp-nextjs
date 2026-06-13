@@ -1,3 +1,4 @@
+import { LabelTip } from '@/components/LabelTip';
 import { useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -26,8 +27,7 @@ export default function TokenTab() {
       <Form form={form} layout="vertical" onFinish={handleFinish} className="pt-2">
         <Form.Item
           name="token"
-          label="Access Token"
-          extra="Bearer token lấy từ Azure AD (audience phải là SharePoint site)"
+          label={<LabelTip label="Access Token" tip="Bearer token lấy từ Azure AD (audience phải là SharePoint site)" />}
           rules={[{ required: true, message: 'Nhập access token' }]}
         >
           <Input.TextArea
@@ -41,8 +41,7 @@ export default function TokenTab() {
 
         <Form.Item
           name="spUrl"
-          label="Site URL"
-          extra="URL của site SharePoint"
+          label={<LabelTip label="Site URL" tip="URL của site SharePoint" />}
           rules={[{ required: true, message: 'Nhập site URL' }]}
         >
           <Input placeholder="https://tenant.sharepoint.com/sites/MySite" autoComplete="off" />
@@ -50,8 +49,7 @@ export default function TokenTab() {
 
         <Form.Item
           name="fileUrl"
-          label="File URL (server-relative)"
-          extra="Đường dẫn server-relative của file"
+          label={<LabelTip label="File URL (server-relative)" tip="Đường dẫn server-relative của file" />}
           rules={[{ required: true, message: 'Nhập file URL' }]}
         >
           <Input placeholder="/sites/MySite/Shared Documents/report.xlsx" autoComplete="off" />
