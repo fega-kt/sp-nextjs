@@ -28,9 +28,9 @@ export function useTokenForm(apiEndpoint: string) {
           spUrl: values.spUrl,
           fileUrl: values.fileUrl,
         });
-        messageApi.success(`Đã tải: ${name}`);
+        messageApi.success(`Downloaded: ${name}`);
       } else {
-        messageApi.success('Lấy token thành công');
+        messageApi.success('Token retrieved successfully');
       }
     } catch (e: any) {
       messageApi.error(e.message);
@@ -41,7 +41,7 @@ export function useTokenForm(apiEndpoint: string) {
 
   function copyToken() {
     navigator.clipboard.writeText(accessToken);
-    messageApi.success('Đã copy token');
+    messageApi.success('Token copied');
   }
 
   return { loading, accessToken, messageApi, contextHolder, form, fileUrl, handleFinish, copyToken };

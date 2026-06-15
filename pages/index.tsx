@@ -38,7 +38,7 @@ export default function Home() {
                     SharePoint Downloader
                   </span>
                   <span className="text-sm leading-tight text-slate-500 dark:text-slate-400 mt-0.5">
-                    Tải file từ SharePoint qua Token, Certificate hoặc Client Secret
+                    Download files from SharePoint via Token, Certificate or Client Secret
                   </span>
                 </div>
               </div>
@@ -48,7 +48,7 @@ export default function Home() {
                   type="text"
                   icon={dark ? <BulbOutlined /> : <BulbFilled />}
                   onClick={toggle}
-                  title={dark ? 'Chuyển sang Light mode' : 'Chuyển sang Dark mode'}
+                  title={dark ? 'Switch to Light mode' : 'Switch to Dark mode'}
                   className="!border !border-slate-200 dark:!border-[#2d3148] hover:!border-indigo-400 !text-slate-500 dark:!text-slate-400 hover:!text-indigo-500 transition-colors"
                 />
               </div>
@@ -118,8 +118,8 @@ function DeployInfo() {
 
   const content = (
     <div className="text-xs leading-relaxed space-y-0.5">
-      <div><span className="text-slate-400">Deploy bởi:</span> <span className="font-medium">{by}</span></div>
-      <div><span className="text-slate-400">Deploy lúc:</span> <span className="font-medium">{formatted}</span></div>
+      <div><span className="text-slate-400">Deployed by:</span> <span className="font-medium">{by}</span></div>
+      <div><span className="text-slate-400">Deployed at:</span> <span className="font-medium">{formatted}</span></div>
       {hash && <div><span className="text-slate-400">Commit:</span> <span className="font-mono font-medium">{hash}</span></div>}
       {msg && <div><span className="text-slate-400">Message:</span> <span className="font-medium">{msg}</span></div>}
     </div>
