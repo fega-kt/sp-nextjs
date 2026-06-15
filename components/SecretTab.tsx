@@ -15,14 +15,14 @@ export default function SecretTab() {
           <Form.Item
             name="tenantId"
             label="Tenant ID"
-            rules={[{ required: true, message: 'Nhập tenant ID' }]}
+            rules={[{ required: true, message: 'Please enter tenant ID' }]}
           >
             <Input placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autoComplete="off" />
           </Form.Item>
           <Form.Item
             name="clientId"
             label="Client ID (App ID)"
-            rules={[{ required: true, message: 'Nhập client ID' }]}
+            rules={[{ required: true, message: 'Please enter client ID' }]}
           >
             <Input placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autoComplete="off" />
           </Form.Item>
@@ -30,23 +30,23 @@ export default function SecretTab() {
 
         <Form.Item
           name="clientSecret"
-          label={<LabelTip label="Client Secret" tip="Secret value từ Azure Portal → App registrations → Certificates & secrets" />}
-          rules={[{ required: true, message: 'Nhập client secret' }]}
+          label={<LabelTip label="Client Secret" tip="Secret value from Azure Portal → App registrations → Certificates & secrets" />}
+          rules={[{ required: true, message: 'Please enter client secret' }]}
         >
-          <Input.Password placeholder="Dán client secret value vào đây" autoComplete="off" />
+          <Input.Password placeholder="Paste client secret value here" autoComplete="off" />
         </Form.Item>
 
         <Form.Item
           name="spUrl"
-          label={<LabelTip label="Site URL" tip="URL của site SharePoint" />}
-          rules={[{ required: true, message: 'Nhập site URL' }]}
+          label={<LabelTip label="Site URL" tip="SharePoint site URL" />}
+          rules={[{ required: true, message: 'Please enter site URL' }]}
         >
           <Input placeholder="https://tenant.sharepoint.com/sites/MySite" autoComplete="off" />
         </Form.Item>
 
         <Form.Item
           name="fileUrl"
-          label={<LabelTip label="File URL (server-relative)" tip="Để trống nếu chỉ muốn lấy token, không download file" />}
+          label={<LabelTip label="File URL (server-relative)" tip="Leave empty to only retrieve a token without downloading" />}
         >
           <Input placeholder="/sites/MySite/Shared Documents/report.xlsx" autoComplete="off" />
         </Form.Item>
@@ -84,8 +84,8 @@ export default function SecretTab() {
               icon={<DownloadOutlined />}
             >
               {loading
-                ? (fileUrl ? 'Đang tải...' : 'Đang lấy token...')
-                : (fileUrl ? 'Tải file' : 'Lấy token')}
+                ? (fileUrl ? 'Downloading...' : 'Getting token...')
+                : (fileUrl ? 'Download' : 'Get Token')}
             </Button>
           </Form.Item>
         </div>

@@ -21,11 +21,11 @@ export function useUpdateCheck() {
 
         notified = true;
         notification.info({
-          message: 'Có bản cập nhật mới',
-          description: 'Tải lại trang để cập nhật phiên bản mới nhất.',
+          message: 'Update available',
+          description: 'Reload the page to get the latest version.',
           btn: (
             <Button type="primary" size="small" onClick={() => window.location.reload()}>
-              Tải lại ngay
+              Reload now
             </Button>
           ),
           duration: 0,

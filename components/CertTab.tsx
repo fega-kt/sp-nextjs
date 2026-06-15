@@ -25,14 +25,14 @@ export default function CertTab() {
           <Form.Item
             name="tenantId"
             label="Tenant ID"
-            rules={[{ required: true, message: 'Nhập tenant ID' }]}
+            rules={[{ required: true, message: 'Please enter tenant ID' }]}
           >
             <Input placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autoComplete="off" />
           </Form.Item>
           <Form.Item
             name="clientId"
             label="Client ID (App ID)"
-            rules={[{ required: true, message: 'Nhập client ID' }]}
+            rules={[{ required: true, message: 'Please enter client ID' }]}
           >
             <Input placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autoComplete="off" />
           </Form.Item>
@@ -40,20 +40,20 @@ export default function CertTab() {
 
         <Form.Item
           name="thumbprint"
-          label={<LabelTip label="Thumbprint (x5t)" tip="Thumbprint SHA-1 của certificate — dạng hex từ Azure Portal → Certificates & secrets" />}
-          rules={[{ required: true, message: 'Nhập thumbprint' }]}
+          label={<LabelTip label="Thumbprint (x5t)" tip="SHA-1 thumbprint of the certificate — hex format from Azure Portal → Certificates & secrets" />}
+          rules={[{ required: true, message: 'Please enter thumbprint' }]}
         >
-          <Input placeholder="40 ký tự hex, lấy từ Azure Portal → Certificates & secrets" autoComplete="off" />
+          <Input placeholder="40-char hex, from Azure Portal → Certificates & secrets" autoComplete="off" />
         </Form.Item>
 
         <Form.Item
-          label={<LabelTip label="Private Key (PEM)" tip="Dán nội dung file .pem / .key hoặc upload trực tiếp" />}
+          label={<LabelTip label="Private Key (PEM)" tip="Paste .pem / .key content or upload the file directly" />}
         >
           <div className="flex gap-2 items-start">
             <Form.Item
               name="privateKey"
               noStyle
-              rules={[{ required: true, message: 'Nhập private key' }]}
+              rules={[{ required: true, message: 'Please enter private key' }]}
             >
               <Input.TextArea
                 rows={4}
@@ -81,15 +81,15 @@ export default function CertTab() {
 
         <Form.Item
           name="spUrl"
-          label={<LabelTip label="Site URL" tip="URL của site SharePoint" />}
-          rules={[{ required: true, message: 'Nhập site URL' }]}
+          label={<LabelTip label="Site URL" tip="SharePoint site URL" />}
+          rules={[{ required: true, message: 'Please enter site URL' }]}
         >
           <Input placeholder="https://tenant.sharepoint.com/sites/MySite" autoComplete="off" />
         </Form.Item>
 
         <Form.Item
           name="fileUrl"
-          label={<LabelTip label="File URL (server-relative)" tip="Để trống nếu chỉ muốn lấy token, không download file" />}
+          label={<LabelTip label="File URL (server-relative)" tip="Leave empty to only retrieve a token without downloading" />}
         >
           <Input placeholder="/sites/MySite/Shared Documents/report.xlsx" autoComplete="off" />
         </Form.Item>
@@ -127,8 +127,8 @@ export default function CertTab() {
               icon={<DownloadOutlined />}
             >
               {loading
-                ? (fileUrl ? 'Đang tải...' : 'Đang lấy token...')
-                : (fileUrl ? 'Tải file' : 'Lấy token')}
+                ? (fileUrl ? 'Downloading...' : 'Getting token...')
+                : (fileUrl ? 'Download' : 'Get Token')}
             </Button>
           </Form.Item>
         </div>

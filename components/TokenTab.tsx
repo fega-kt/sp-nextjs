@@ -13,7 +13,7 @@ export default function TokenTab() {
     setLoading(true);
     try {
       const name = await triggerDownload('/api/download', values);
-      messageApi.success(`Đã tải: ${name}`);
+      messageApi.success(`Downloaded: ${name}`);
     } catch (e: any) {
       messageApi.error(e.message);
     } finally {
@@ -27,12 +27,12 @@ export default function TokenTab() {
       <Form form={form} layout="vertical" onFinish={handleFinish} className="pt-2">
         <Form.Item
           name="token"
-          label={<LabelTip label="Access Token" tip="Bearer token lấy từ Azure AD (audience phải là SharePoint site)" />}
-          rules={[{ required: true, message: 'Nhập access token' }]}
+          label={<LabelTip label="Access Token" tip="Bearer token from Azure AD (audience must be the SharePoint site)" />}
+          rules={[{ required: true, message: 'Please enter access token' }]}
         >
           <Input.TextArea
             rows={3}
-            placeholder="eyJ0eXAiOiJKV1Qi... (JWT từ Azure AD)"
+            placeholder="eyJ0eXAiOiJKV1Qi... (JWT from Azure AD)"
             spellCheck={false}
             autoComplete="off"
             style={{ fontFamily: 'Menlo, Monaco, Consolas, monospace', fontSize: 13 }}
@@ -41,16 +41,16 @@ export default function TokenTab() {
 
         <Form.Item
           name="spUrl"
-          label={<LabelTip label="Site URL" tip="URL của site SharePoint" />}
-          rules={[{ required: true, message: 'Nhập site URL' }]}
+          label={<LabelTip label="Site URL" tip="SharePoint site URL" />}
+          rules={[{ required: true, message: 'Please enter site URL' }]}
         >
           <Input placeholder="https://tenant.sharepoint.com/sites/MySite" autoComplete="off" />
         </Form.Item>
 
         <Form.Item
           name="fileUrl"
-          label={<LabelTip label="File URL (server-relative)" tip="Đường dẫn server-relative của file" />}
-          rules={[{ required: true, message: 'Nhập file URL' }]}
+          label={<LabelTip label="File URL (server-relative)" tip="Server-relative path of the file" />}
+          rules={[{ required: true, message: 'Please enter file URL' }]}
         >
           <Input placeholder="/sites/MySite/Shared Documents/report.xlsx" autoComplete="off" />
         </Form.Item>
@@ -65,7 +65,7 @@ export default function TokenTab() {
               loading={loading}
               icon={<DownloadOutlined />}
             >
-              {loading ? 'Đang tải...' : 'Tải file'}
+              {loading ? 'Downloading...' : 'Download'}
             </Button>
           </Form.Item>
         </div>
