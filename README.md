@@ -122,7 +122,7 @@ Lấy access token từ Azure AD qua client secret (client credentials flow).
 
 ### `GET /api/version`
 
-Trả về git commit hash hiện tại trên server — dùng bởi update check.
+Trả về git commit hash của bản build đang chạy (gắn lúc build).
 
 **Response:**
 ```json
@@ -135,6 +135,23 @@ App Registration cần có:
 - **API permissions:** `SharePoint > Sites.Selected` hoặc `Sites.Read.All` (Application)
 - **Certificate** (Tab Certificate): upload file `.cer` (public key) vào *Certificates & secrets*
 - **Client secret** (Tab Client Secret): tạo secret trong *Certificates & secrets*, copy value ngay sau khi tạo
+
+## Deploy
+
+Push lên `main` → GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)):
+
+1. Build Docker image (Next.js standalone) và push lên `ghcr.io/fega-kt/sp-nextjs` (`latest` + `sha-<commit>`)
+2. SSH vào server qua Cloudflare Access, `cd /opt/zhizhu/sp-nextjs` rồi `docker compose pull && docker compose up -d`
+
+`docker-compose.yml` nằm ở repo **zhizhu-server-deploy** (thư mục `sp-nextjs/`, port `127.0.0.1:8092`, container `zhizhu-sp-nextjs`). Không cần `.env`.
+
+**Secrets cần có** (environment `production`): `SERVER_SSH_KEY`, `SERVER_HOST`, `SERVER_USER`, `SERVER_DEPLOY_PATH` (= `/opt/zhizhu/sp-nextjs`), `CF_ACCESS_CLIENT_ID`, `CF_ACCESS_CLIENT_SECRET`, `GHCR_PAT` (quyền `read:packages`).
+
+Build image ở local:
+```bash
+docker build -t sp-nextjs .
+docker run --rm -p 3000:3000 sp-nextjs
+```
 
 ## Lưu ý kỹ thuật
 

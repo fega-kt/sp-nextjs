@@ -2,6 +2,15 @@
 const { execSync } = require('child_process');
 
 function getGitInfo() {
+  // Docker builds have no .git — CI passes the info as DEPLOY_* build args instead
+  if (process.env.DEPLOY_HASH) {
+    return {
+      by: process.env.DEPLOY_BY || 'unknown',
+      at: process.env.DEPLOY_AT || new Date().toISOString(),
+      hash: process.env.DEPLOY_HASH,
+      msg: process.env.DEPLOY_MSG || '',
+    };
+  }
   try {
     return {
       by: execSync('git log -1 --format=%an').toString().trim(),
@@ -17,6 +26,9 @@ function getGitInfo() {
 const git = getGitInfo();
 
 const nextConfig = {
+  // Self-contained server (.next/standalone) for the Docker image only — on Windows the
+  // standalone copy needs symlink permission and breaks a plain local `pnpm build`
+  output: process.env.BUILD_STANDALONE === '1' ? 'standalone' : undefined,
   experimental: {
     serverComponentsExternalPackages: ['@pnp/sp-commonjs', '@pnp/common-commonjs', '@pnp/odata-commonjs', '@pnp/logging-commonjs', '@pnp/nodejs-commonjs'],
   },

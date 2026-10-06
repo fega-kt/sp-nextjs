@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.git
+.github
+.env
+.env.*
+.npmrc
+*.log
+*.tsbuildinfo
+.claude/
+.vscode/
+.idea/
+.yarn/
