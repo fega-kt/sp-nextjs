@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import { ConfigProvider, theme as antdTheme } from 'antd';
 import { ThemeProvider, useTheme } from '@/contexts/theme';
 import '@/styles/globals.css';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Toaster } from 'sonner';
 
 function AntdProvider({ children }: { children: ReactNode }) {
@@ -32,6 +32,13 @@ function AntdProvider({ children }: { children: ReactNode }) {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    // SSR antd CSS (see _document) only covers the first paint and is always light theme.
+    // It sits later in <head> than the client's styles, so it would override the dark
+    // theme's CSS variables — drop it now that the client has injected its own.
+    document.querySelectorAll('style[data-antd-ssr]').forEach((el) => el.remove());
+  }, []);
+
   return (
     <ThemeProvider>
       <AntdProvider>
