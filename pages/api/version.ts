@@ -1,11 +1,6 @@
-import { execSync } from 'child_process';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+// Hash is baked in at build time by next.config.js (works without .git in the Docker image)
 export default function handler(_req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const hash = execSync('git log -1 --format=%h').toString().trim();
-    res.status(200).json({ hash });
-  } catch {
-    res.status(200).json({ hash: '' });
-  }
+  res.status(200).json({ hash: process.env.NEXT_PUBLIC_DEPLOY_HASH || '' });
 }

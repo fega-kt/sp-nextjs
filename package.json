@@ -19,6 +19,7 @@
     "@pnp/sp-commonjs": "^2.15.0",
     "antd": "^6.4.3",
     "next": "^14.2.5",
+    "node-fetch": "^2.6.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
