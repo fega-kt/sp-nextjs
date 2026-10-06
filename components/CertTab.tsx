@@ -5,7 +5,7 @@ import { Button, Form, Input, Tooltip } from 'antd';
 import { useRef } from 'react';
 
 export default function CertTab() {
-  const { loading, accessToken, contextHolder, form, fileUrl, handleFinish, copyToken } =
+  const { loading, accessToken, form, fileUrl, handleFinish, copyToken } =
     useTokenForm('/api/download-cert');
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -19,7 +19,6 @@ export default function CertTab() {
 
   return (
     <>
-      {contextHolder}
       <Form form={form} layout="vertical" onFinish={handleFinish} className="pt-2">
         <div className="grid grid-cols-2 gap-x-4">
           <Form.Item

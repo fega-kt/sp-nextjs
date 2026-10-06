@@ -1,11 +1,12 @@
 import { triggerDownload } from '@/lib/download';
-import { Form, message } from 'antd';
+import { toastError } from '@/lib/notify';
+import { Form } from 'antd';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export function useTokenForm(apiEndpoint: string) {
   const [loading, setLoading] = useState(false);
   const [accessToken, setAccessToken] = useState('');
-  const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const fileUrl = Form.useWatch('fileUrl', form);
 
@@ -28,12 +29,12 @@ export function useTokenForm(apiEndpoint: string) {
           spUrl: values.spUrl,
           fileUrl: values.fileUrl,
         });
-        messageApi.success(`Downloaded: ${name}`);
+        toast.success(`Downloaded: ${name}`);
       } else {
-        messageApi.success('Token retrieved successfully');
+        toast.success('Token retrieved successfully');
       }
-    } catch (e: any) {
-      messageApi.error(e.message);
+    } catch (e) {
+      toastError(values.fileUrl ? 'Download failed' : 'Failed to get token', e);
     } finally {
       setLoading(false);
     }
@@ -41,8 +42,8 @@ export function useTokenForm(apiEndpoint: string) {
 
   function copyToken() {
     navigator.clipboard.writeText(accessToken);
-    messageApi.success('Token copied');
+    toast.success('Token copied');
   }
 
-  return { loading, accessToken, messageApi, contextHolder, form, fileUrl, handleFinish, copyToken };
+  return { loading, accessToken, form, fileUrl, handleFinish, copyToken };
 }

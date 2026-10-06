@@ -4,12 +4,11 @@ import { CopyOutlined, DownloadOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Tooltip } from 'antd';
 
 export default function SecretTab() {
-  const { loading, accessToken, contextHolder, form, fileUrl, handleFinish, copyToken } =
+  const { loading, accessToken, form, fileUrl, handleFinish, copyToken } =
     useTokenForm('/api/download-secret');
 
   return (
     <>
-      {contextHolder}
       <Form form={form} layout="vertical" onFinish={handleFinish} className="pt-2">
         <div className="grid grid-cols-2 gap-x-4">
           <Form.Item
