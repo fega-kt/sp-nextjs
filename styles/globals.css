@@ -18,6 +18,19 @@ html.dark {
   color-scheme: dark;
 }
 
+/* Theme switch: one page-wide crossfade instead of per-element transitions */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+}
+
 /* Force dark inputs when page is in dark mode */
 html.dark input,
 html.dark textarea {
