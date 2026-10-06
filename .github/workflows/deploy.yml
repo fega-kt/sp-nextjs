@@ -86,7 +86,7 @@ jobs:
           TUNNEL_SERVICE_TOKEN_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
           echo "==> SSH to ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}"
-          # Unquoted heredoc: ${{ }} and plain $VAR expand on the runner, \$ expands on the server
+          # Unquoted heredoc: secrets and plain $VAR expand on the runner, escaped $ expands on the server
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} bash <<ENDSSH
             set -e
             echo "==> Connected: \$(whoami)@\$(hostname) (\$(hostname -I 2>/dev/null | awk '{print \$1}'))"
