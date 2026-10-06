@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { flushSync } from 'react-dom';
 
 type ThemeCtx = { dark: boolean; toggle: () => void };
 
@@ -19,13 +20,30 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   function toggle() {
-    setDark((prev) => {
-      const next = !prev;
-      localStorage.setItem('theme', next ? 'dark' : 'light');
-      document.documentElement.classList.toggle('dark', next);
-      document.documentElement.style.colorScheme = next ? 'dark' : 'light';
-      return next;
-    });
+    const next = !dark;
+    const root = document.documentElement;
+    localStorage.setItem('theme', next ? 'dark' : 'light');
+
+    // Apply Tailwind class + antd theme in the same frame so nothing switches in steps
+    const apply = () => {
+      flushSync(() => setDark(next));
+      root.classList.toggle('dark', next);
+      root.style.colorScheme = next ? 'dark' : 'light';
+    };
+
+    // Disable per-element CSS transitions while switching — they finish at different
+    // times and fight with the view-transition crossfade
+    root.classList.add('theme-switching');
+    const done = () => root.classList.remove('theme-switching');
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduceMotion) {
+      apply();
+      requestAnimationFrame(() => requestAnimationFrame(done));
+      return;
+    }
+
+    document.startViewTransition(apply).finished.finally(done);
   }
 
   return (
