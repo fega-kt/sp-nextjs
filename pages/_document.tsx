@@ -1,4 +1,5 @@
-import Document, { Head, Html, Main, NextScript } from 'next/document';
+import { StyleProvider, createCache, extractStyle } from '@ant-design/cssinjs';
+import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 
 const MyDocument = () => (
   <Html lang="vi" suppressHydrationWarning>
@@ -17,5 +18,35 @@ const MyDocument = () => (
     </body>
   </Html>
 );
+
+// antd generates its CSS in JS at runtime — collect it during SSR and inline it in <head>,
+// otherwise the first paint shows unstyled antd components until JS loads.
+// Removed again in _app once the client has injected its own styles.
+MyDocument.getInitialProps = async (ctx: DocumentContext) => {
+  const cache = createCache();
+  const originalRenderPage = ctx.renderPage;
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: (App) => (props) => (
+        <StyleProvider cache={cache}>
+          <App {...props} />
+        </StyleProvider>
+      ),
+    });
+
+  const initialProps = await Document.getInitialProps(ctx);
+  // Strip the cache-path marker: with it the client treats these styles as already present
+  // and skips injecting them, so they'd vanish once _app removes this tag
+  const style = extractStyle(cache, true).replace(/\.data-ant-cssinjs-cache-path\{[^}]*\}/, '');
+  return {
+    ...initialProps,
+    styles: (
+      <>
+        {initialProps.styles}
+        <style data-antd-ssr dangerouslySetInnerHTML={{ __html: style }} />
+      </>
+    ),
+  };
+};
 
 export default MyDocument;
