@@ -1,21 +1,22 @@
 import { LabelTip } from '@/components/LabelTip';
 import { useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { triggerDownload } from '@/lib/download';
+import { toastError } from '@/lib/notify';
+import { toast } from 'sonner';
 
 export default function TokenTab() {
   const [loading, setLoading] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
 
   async function handleFinish(values: { token: string; spUrl: string; fileUrl: string }) {
     setLoading(true);
     try {
       const name = await triggerDownload('/api/download', values);
-      messageApi.success(`Downloaded: ${name}`);
-    } catch (e: any) {
-      messageApi.error(e.message);
+      toast.success(`Downloaded: ${name}`);
+    } catch (e) {
+      toastError('Không tải được file', e);
     } finally {
       setLoading(false);
     }
@@ -23,7 +24,6 @@ export default function TokenTab() {
 
   return (
     <>
-      {contextHolder}
       <Form form={form} layout="vertical" onFinish={handleFinish} className="pt-2">
         <Form.Item
           name="token"

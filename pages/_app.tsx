@@ -3,6 +3,7 @@ import { ConfigProvider, theme as antdTheme } from 'antd';
 import { ThemeProvider, useTheme } from '@/contexts/theme';
 import '@/styles/globals.css';
 import { ReactNode } from 'react';
+import { Toaster } from 'sonner';
 
 function AntdProvider({ children }: { children: ReactNode }) {
   const { dark } = useTheme();
@@ -25,6 +26,7 @@ function AntdProvider({ children }: { children: ReactNode }) {
         }}
       >
         {children}
+        <Toaster theme={dark ? 'dark' : 'light'} position="top-right" richColors closeButton />
       </ConfigProvider>
   );
 }

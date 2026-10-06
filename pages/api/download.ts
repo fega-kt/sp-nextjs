@@ -12,6 +12,7 @@ import { SPRest } from "@pnp/sp-commonjs";
 import "@pnp/sp-commonjs/files";
 import "@pnp/sp-commonjs/webs";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { withLog } from "@/lib/withLog";
 import * as path from "path";
 
 const MIME_MAP: Record<string, string> = {
@@ -43,7 +44,7 @@ function createSp(token: string, spUrl: string): SPRest {
   return spRest;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -83,3 +84,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: msg });
   }
 }
+
+export default withLog(handler);
